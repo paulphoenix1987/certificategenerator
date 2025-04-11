@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Course Completion - Personalized Certificate</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-css/2.0.0/font-poppins.min.css" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f7f9fc;
+      color: #333;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 30px;
+      margin-top: 20px;
+    }
+    h1 {
+      color: #4F6E4C;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    .congrats-message {
+      font-size: 18px;
+      margin-bottom: 30px;
+      font-weight: 300;
+    }
+    .name-input {
+      width: 100%;
+      max-width: 400px;
+      padding: 12px 15px;
+      margin-bottom: 25px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      text-align: center;
+    }
+    .name-input:focus {
+      outline: none;
+      border-color: #4F6E4C;
+      box-shadow: 0 0 0 2px rgba(79, 110, 76, 0.2);
+    }
+    .certificate-btn {
+      display: inline-block;
+      background-color: #4F6E4C;
+      color: white;
+      font-weight: 500;
+      padding: 15px 30px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 18px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+    .certificate-btn:hover {
+      background-color: #3d5a3a;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(79, 110, 76, 0.2);
+    }
+    .certificate-btn:disabled {
+      background-color: #b3b3b3;
+      cursor: not-allowed;
+    }
+    .certificate-icon {
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+    .footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #666;
+      font-weight: 300;
+    }
+    .error-message {
+      color: #e74c3c;
+      font-size: 14px;
+      margin-top: -15px;
+      margin-bottom: 15px;
+      display: none;
+      font-weight: 400;
+    }
+    #certificate-preview {
+      display: none;
+      margin: 20px auto;
+      max-width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .course-selection {
+      margin: 30px auto;
+      max-width: 500px;
+      text-align: left;
+      background-color: #f5f8f5;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    .course-option {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+    }
+    .course-option input[type="radio"] {
+      margin-right: 10px;
+      cursor: pointer;
+      width: 18px;
+      height: 18px;
+    }
+    .course-option label {
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .course-selection h3 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      color: #4F6E4C;
+      font-weight: 500;
+      text-align: center;
+    }
+    #course-error {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Congratulations on Completing the Course!</h1>
+      <div class="congrats-message">
+        <p>You've successfully completed all modules and requirements for this course. We're proud of your achievement and dedication to learning!</p>
+      </div>
+
+      <input type="text" id="student-name" class="name-input" placeholder="Enter your full name" required />
+      <div id="name-error" class="error-message">Please enter your name to generate your certificate</div>
+
+      <div class="course-selection">
+        <h3>Select Completed Course</h3>
+        <div class="course-option">
+          <input type="radio" id="course1" name="course" value="Construction Fundamentals">
+          <label for="course1">Course 1: Construction Fundamentals</label>
+        </div>
+        <div class="course-option">
+          <input type="radio" id="course2" name="course" value="Australian Business Fundamentals">
+          <label for="course2">Course 2: Australian Business Fundamentals</label>
+        </div>
+        <div class="course-option">
+          <input type="radio" id="course3" name="course" value="Construction Specific Knowledge">
+          <label for="course3">Course 3: Construction Specific Knowledge</label>
+        </div>
+        <div id="course-error" class="error-message">Please select a course to generate your certificate</div>
+      </div>
+
+      <canvas id="certificate-canvas" style="display: none;"></canvas>
+      <img id="certificate-preview" alt="Certificate Preview" />
+
+      <button class="certificate-btn" id="generate-certificate">
+        <svg class="certificate-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 15V3m0 12l-4-4m4 4l4-4"/>
+          <path d="M2 17l.621 2.485A2 2 0 0 0 4.561 21h14.878a2 2 0 0 0 1.94-1.515L22 17"/>
+        </svg>
+        Generate & Download Certificate
+      </button>
+
+      <div class="footer">
+        <p>Please ensure your name is spelled correctly and the correct course is selected as they will appear on your certificate.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const nameInput = document.getElementById('student-name');
+    const generateBtn = document.getElementById('generate-certificate');
+    const nameError = document.getElementById('name-error');
+    const courseError = document.getElementById('course-error');
+    const certificateCanvas = document.getElementById('certificate-canvas');
+    const certificatePreview = document.getElementById('certificate-preview');
+
+    generateBtn.addEventListener('click', () => {
+      const name = nameInput.value.trim();
+      const selectedCourse = document.querySelector('input[name="course"]:checked');
+      let isValid = true;
+
+      if (!name) {
+        nameError.style.display = 'block';
+        isValid = false;
+      } else {
+        nameError.style.display = 'none';
+      }
+
+      if (!selectedCourse) {
+        courseError.style.display = 'block';
+        isValid = false;
+      } else {
+        courseError.style.display = 'none';
+      }
+
+      if (isValid) {
+        createCertificateImage(name, selectedCourse.value);
+      }
+    });
+
+
+    function createCertificateImage(name, courseName) {
+        const canvas = certificateCanvas;
+        const ctx = canvas.getContext('2d');
+        const bgImage = new Image();
+        bgImage.crossOrigin = 'anonymous';
+        bgImage.src = 'https://i.imgur.com/Q2CTRCl.png'; // Background
+
+        bgImage.onload = () => {
+            canvas.width = bgImage.width;
+            canvas.height = bgImage.height;
+            ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#000';
+            const centerX = canvas.width / 2;
+            let y = 470;
+
+            // TITLE
+            ctx.font = 'bold 100px Poppins, sans-serif';
+            ctx.fillText('CERTIFICATE', centerX, y);
+            ctx.font = '60px Poppins, sans-serif';
+            ctx.fillText('OF COMPLETION', centerX, y + 70);
+
+            // Presented to
+            y += 180;
+            ctx.font = '58px Poppins, sans-serif';
+            ctx.fillText('This Is Presented To', centerX, y);
+
+            // Name (very big and green)
+            y += 115;
+            ctx.font = 'bold 100px Poppins, sans-serif';
+            ctx.fillStyle = '#4F6E4C';
+            ctx.fillText(name, centerX, y);
+
+            // Completion text
+            y += 118;
+            ctx.fillStyle = '#000';
+            ctx.font = '48px Poppins, sans-serif';
+            ctx.fillText('HAS SUCCESSFULLY COMPLETED', centerX, y);
+
+            // Course
+            y += 80;
+            ctx.font = 'bold 60px Poppins, sans-serif';
+            ctx.fillText(courseName, centerX, y);
+
+            // Date
+            y += 65;
+            ctx.font = '40px Poppins, sans-serif';
+            const currentDate = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+            });
+            ctx.fillText(currentDate, centerX, y);
+
+            // Signature block — pinned near the bottom
+            const signatureY = canvas.height - 260;
+            ctx.font = 'bold 42px Poppins, sans-serif';
+            ctx.fillStyle = '#000';
+            ctx.fillText('JASMIN COOPER', centerX, signatureY);
+
+            ctx.font = 'italic 32px Poppins, sans-serif';
+            ctx.fillStyle = '#444';
+            ctx.fillText('Managing Director & Finance Manager', centerX, signatureY + 40);
+
+            // Show & download
+            certificatePreview.src = canvas.toDataURL('image/png');
+            certificatePreview.style.display = 'block';
+            downloadCertificate(name, courseName);
+        };
+    }
+
+
+
+    function downloadCertificate(name, courseName) {
+      const link = document.createElement('a');
+      const formattedName = name.replace(/\s+/g, '-').toLowerCase();
+      const formattedCourse = courseName.replace(/\s+/g, '-').toLowerCase();
+      link.download = `${formattedName}-${formattedCourse}-certificate.png`;
+      link.href = certificateCanvas.toDataURL('image/png');
+      link.click();
+    }
+  </script>
+</body>
+</html>
