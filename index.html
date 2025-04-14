@@ -218,7 +218,7 @@
         const ctx = canvas.getContext('2d');
         const bgImage = new Image();
         bgImage.crossOrigin = 'anonymous';
-        bgImage.src = 'https://i.imgur.com/Q2CTRCl.png'; // Background
+        bgImage.src = 'https://i.imgur.com/4kIoPBk.jpeg'; // Background
 
         bgImage.onload = () => {
             canvas.width = bgImage.width;
@@ -268,15 +268,38 @@
             });
             ctx.fillText(currentDate, centerX, y);
 
+            // Load signature image
+            const signatureImage = new Image();
+            signatureImage.crossOrigin = 'anonymous';
+            signatureImage.src = 'https://i.imgur.com/x2PE0jE.png';
+
+            signatureImage.onload = () => {
+              const sigWidth = 300;
+              const sigHeight = 100;
+              const sigX = centerX - sigWidth / 2;
+              const sigY = canvas.height - 340;
+
+              ctx.drawImage(signatureImage, sigX, sigY, sigWidth, sigHeight);
+
+             // Draw underline below the signature
+              const lineY = sigY + sigHeight - 14;
+              ctx.beginPath();
+              ctx.moveTo(sigX, lineY);
+              ctx.lineTo(sigX + sigWidth, lineY);
+              ctx.strokeStyle = '#000';
+              ctx.lineWidth = 3;
+              ctx.stroke();
+
+
             // Signature block — pinned near the bottom
             const signatureY = canvas.height - 260;
             ctx.font = 'bold 42px Poppins, sans-serif';
             ctx.fillStyle = '#000';
-            ctx.fillText('JASMIN COOPER', centerX, signatureY);
+            ctx.fillText('JASMIN COOPER', centerX, sigY + 125);
 
             ctx.font = 'italic 32px Poppins, sans-serif';
             ctx.fillStyle = '#444';
-            ctx.fillText('CEO & Managing Director', centerX, signatureY + 40);
+            ctx.fillText('CEO & Managing Director', centerX, sigY + 165);
 
             // Show & download
             certificatePreview.src = canvas.toDataURL('image/png');
@@ -284,6 +307,7 @@
             downloadCertificate(name, courseName);
         };
     }
+  }
 
 
 
