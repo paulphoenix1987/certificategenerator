@@ -162,6 +162,8 @@
         </div>
         <div id="course-error" class="error-message">Please select a course to generate your certificate</div>
       </div>
+      <input type="date" id="date-input" class="name-input" placeholder="Enter your preferred date" required />
+      <div id="dateError" class="error-message">Please enter the date to generate your certificate</div>
 
       <canvas id="certificate-canvas" style="display: none;"></canvas>
       <img id="certificate-preview" alt="Certificate Preview" />
@@ -182,8 +184,10 @@
 
   <script>
     const nameInput = document.getElementById('student-name');
+    const dateInput = document.getElementById('date-input');
     const generateBtn = document.getElementById('generate-certificate');
     const nameError = document.getElementById('name-error');
+    const dateError = document.getElementById('dateError');
     const courseError = document.getElementById('course-error');
     const certificateCanvas = document.getElementById('certificate-canvas');
     const certificatePreview = document.getElementById('certificate-preview');
@@ -191,6 +195,7 @@
     generateBtn.addEventListener('click', () => {
       const name = nameInput.value.trim();
       const selectedCourse = document.querySelector('input[name="course"]:checked');
+      const selectedDate = dateInput.value;
       let isValid = true;
 
       if (!name) {
@@ -206,14 +211,21 @@
       } else {
         courseError.style.display = 'none';
       }
+      
+      if (!selectedDate) {
+        dateError.style.display = 'block';
+        isValid = false;
+      } else {
+        dateError.style.display = 'none';
+      }
 
       if (isValid) {
-        createCertificateImage(name, selectedCourse.value);
+        createCertificateImage(name, selectedCourse.value, selectedDate);
       }
     });
 
 
-    function createCertificateImage(name, courseName) {
+    function createCertificateImage(name, courseName, selectedDate) {
         const canvas = certificateCanvas;
         const ctx = canvas.getContext('2d');
         const bgImage = new Image();
@@ -228,7 +240,7 @@
             ctx.textAlign = 'center';
             ctx.fillStyle = '#000';
             const centerX = canvas.width / 2;
-            let y = 470;
+            let y = 440;
 
             // TITLE
             ctx.font = 'bold 100px Poppins, sans-serif';
@@ -237,36 +249,38 @@
             ctx.fillText('OF COMPLETION', centerX, y + 70);
 
             // Presented to
-            y += 180;
+            y += 160;
             ctx.font = '58px Poppins, sans-serif';
             ctx.fillText('This Is Presented To', centerX, y);
 
             // Name (very big and green)
-            y += 115;
+            y += 105;
             ctx.font = 'bold 100px Poppins, sans-serif';
             ctx.fillStyle = '#4F6E4C';
             ctx.fillText(name, centerX, y);
 
             // Completion text
-            y += 118;
+            y += 98;
             ctx.fillStyle = '#000';
             ctx.font = '48px Poppins, sans-serif';
             ctx.fillText('HAS SUCCESSFULLY COMPLETED', centerX, y);
 
             // Course
-            y += 80;
+            y += 70;
             ctx.font = 'bold 54px Poppins, sans-serif';
             ctx.fillText(courseName, centerX, y);
 
             // Date
             y += 65;
             ctx.font = '40px Poppins, sans-serif';
-            const currentDate = new Date().toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
+            // Format the selected date
+            const dateObj = new Date(selectedDate);
+            const formattedDate = dateObj.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
             });
-            ctx.fillText(currentDate, centerX, y);
+            ctx.fillText(formattedDate, centerX, y);
 
             // Load signature image
             const signatureImage = new Image();
@@ -283,11 +297,12 @@
 
              // Draw underline below the signature
               const lineY = sigY + sigHeight - 14;
+              const extra = 40;
               ctx.beginPath();
-              ctx.moveTo(sigX, lineY);
-              ctx.lineTo(sigX + sigWidth, lineY);
-              ctx.strokeStyle = '#000';
-              ctx.lineWidth = 3;
+              ctx.moveTo(sigX - extra, lineY);
+              ctx.lineTo(sigX + sigWidth + extra, lineY);
+              ctx.strokeStyle = '#4F6E4C';
+              ctx.lineWidth = 5;
               ctx.stroke();
 
 
@@ -305,20 +320,18 @@
             certificatePreview.src = canvas.toDataURL('image/png');
             certificatePreview.style.display = 'block';
             downloadCertificate(name, courseName);
+          };
         };
     }
-  }
 
-
-
-  /*  function downloadCertificate(name, courseName) {
+   /* function downloadCertificate(name, courseName) {
       const link = document.createElement('a');
       const formattedName = name.replace(/\s+/g, '-').toLowerCase();
       const formattedCourse = courseName.replace(/\s+/g, '-').toLowerCase();
       link.download = `${formattedName}-${formattedCourse}-certificate.png`;
       link.href = certificateCanvas.toDataURL('image/png');
       link.click();
-    } */
+    }*/
   </script>
 </body>
 </html>
