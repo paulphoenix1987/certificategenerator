@@ -218,7 +218,7 @@
         const ctx = canvas.getContext('2d');
         const bgImage = new Image();
         bgImage.crossOrigin = 'anonymous';
-        bgImage.src = 'https://i.imgur.com/4kIoPBk.jpeg'; // Background
+        bgImage.src = 'https://i.imgur.com/kh6XD5r.png'; // Background
 
         bgImage.onload = () => {
             canvas.width = bgImage.width;
@@ -255,7 +255,7 @@
 
             // Course
             y += 80;
-            ctx.font = 'bold 60px Poppins, sans-serif';
+            ctx.font = 'bold 54px Poppins, sans-serif';
             ctx.fillText(courseName, centerX, y);
 
             // Date
@@ -311,14 +311,14 @@
 
 
 
-    function downloadCertificate(name, courseName) {
+  /*  function downloadCertificate(name, courseName) {
       const link = document.createElement('a');
       const formattedName = name.replace(/\s+/g, '-').toLowerCase();
       const formattedCourse = courseName.replace(/\s+/g, '-').toLowerCase();
       link.download = `${formattedName}-${formattedCourse}-certificate.png`;
       link.href = certificateCanvas.toDataURL('image/png');
       link.click();
-    }
+    } */
   </script>
 </body>
 </html>
