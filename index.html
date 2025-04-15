@@ -245,7 +245,8 @@
         const ctx = canvas.getContext('2d');
         const bgImage = new Image();
         bgImage.crossOrigin = 'anonymous';
-        bgImage.src = 'https://i.imgur.com/kh6XD5r.png'; // Background
+        bgImage.src = 'https://i.imgur.com/vZKyZ6N.png'; // Background
+        
 
         bgImage.onload = () => {
             canvas.width = bgImage.width;
@@ -255,41 +256,41 @@
             ctx.textAlign = 'center';
             ctx.fillStyle = '#000';
             const centerX = canvas.width / 2;
-            let y = 440;
+            let y = 400;
 
             // TITLE
-            ctx.font = 'bold 100px Poppins, sans-serif';
+            ctx.font = '100px Poppins, sans-serif';
             ctx.fillText('CERTIFICATE', centerX, y);
-            ctx.font = '60px Poppins, sans-serif';
+            ctx.font = '50px Poppins, sans-serif';
             ctx.fillText('OF COMPLETION', centerX, y + 70);
 
             // Presented to
-            y += 160;
-            ctx.font = '58px Poppins, sans-serif';
+            y += 155;
+            ctx.font = '48px Poppins, sans-serif';
             ctx.fillText('This Is Presented To', centerX, y);
 
             // Name (very big and green)
             y += 105;
-            ctx.font = 'bold 100px Poppins, sans-serif';
+            ctx.font = '100px Poppins, sans-serif';
             ctx.fillStyle = '#4F6E4C';
             ctx.fillText(name, centerX, y);
 
             // Completion text
-            y += 98;
+            y += 90;
             ctx.fillStyle = '#000';
-            ctx.font = '48px Poppins, sans-serif';
+            ctx.font = '45px Poppins, sans-serif';
             ctx.fillText('HAS SUCCESSFULLY COMPLETED', centerX, y);
 
             // Course name wrapping (2 words per line)
-            y += 70;
-            ctx.font = 'bold 65px Poppins, sans-serif';
+            y += 80;
+            ctx.font = 'bold 55px Poppins, sans-serif';
             const courseWords = courseName.split(' ');
             const courseLines = [];
             for (let i = 0; i < courseWords.length; i += 2) {
                 courseLines.push(courseWords.slice(i, i + 2).join(' '));
             }
             courseLines.forEach((line, index) => {
-                ctx.fillText(line, centerX, y + (index * 60));
+                ctx.fillText(line, centerX, y + (index * 80));
             });
             y += courseLines.length * 40;
 
@@ -312,14 +313,14 @@
 
             signatureImage.onload = () => {
               const sigWidth = 300;
-              const sigHeight = 100;
+              const sigHeight = 95;
               const sigX = centerX - sigWidth / 2;
               const sigY = canvas.height - 340;
 
               ctx.drawImage(signatureImage, sigX, sigY, sigWidth, sigHeight);
 
              // Draw underline below the signature
-              const lineY = sigY + sigHeight - 14;
+              const lineY = sigY + sigHeight - 12;
               const extra = 40;
               ctx.beginPath();
               ctx.moveTo(sigX - extra, lineY);
