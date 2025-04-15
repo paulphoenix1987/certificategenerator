@@ -52,6 +52,21 @@
       border-color: #4F6E4C;
       box-shadow: 0 0 0 2px rgba(79, 110, 76, 0.2);
     }
+    .date-input {
+      width: 100%;
+      max-width: 150px;
+      padding: 12px 15px;
+      margin-bottom: 25px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      text-align: center;
+    }
+    .date-input:focus {
+      outline: none;
+      border-color: #4F6E4C;
+      box-shadow: 0 0 0 2px rgba(79, 110, 76, 0.2);
+    }
     .certificate-btn {
       display: inline-block;
       background-color: #4F6E4C;
@@ -162,9 +177,9 @@
         </div>
         <div id="course-error" class="error-message">Please select a course to generate your certificate</div>
       </div>
-      <input type="date" id="date-input" class="name-input" placeholder="Enter your preferred date" required />
+      <input type="date" id="date-input" class="date-input" placeholder="Enter your preferred date" required />
       <div id="dateError" class="error-message">Please enter the date to generate your certificate</div>
-
+      <br>
       <canvas id="certificate-canvas" style="display: none;"></canvas>
       <img id="certificate-preview" alt="Certificate Preview" />
 
